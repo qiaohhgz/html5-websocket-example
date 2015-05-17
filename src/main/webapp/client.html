@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Client</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+</head>
+<body>
+<div>
+    <input type="submit" value="Start send msg" onclick="start()"/>
+</div>
+<div id="messages"></div>
+<script type="text/javascript">
+    var ws = new WebSocket('ws://localhost:8080/web/socket');
+
+    ws.onerror = function (event) {
+        onError(event);
+    };
+
+    ws.onopen = function (event) {
+        onOpen(event);
+    };
+
+    ws.onmessage = function (event) {
+        onMessage(event);
+    };
+
+    function onMessage(event) {
+        document.getElementById('messages').innerHTML += '<br />' + event.data;
+    }
+
+    function onOpen(event) {
+        document.getElementById('messages').innerHTML = '连接服务器成功';
+    }
+
+    function onError(event) {
+        alert(event.data);
+    }
+
+    function start() {
+        ws.send('hello');
+        return false;
+    }
+</script>
+</body>
+</html>
