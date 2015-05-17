@@ -11,7 +11,7 @@ import java.io.IOException;
  * JimQiao
  * 2015-05-17 19:25
  */
-@ServerEndpoint("/socket")
+@ServerEndpoint("/socket.ws")
 public class WebSocketServlet {
     @OnMessage
     public void onMessage(String message, Session session)

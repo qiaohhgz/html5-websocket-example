@@ -10,19 +10,25 @@
 </div>
 <div id="messages"></div>
 <script type="text/javascript">
-    var ws = new WebSocket('ws://localhost:8080/web/socket');
+    var path = window.location.hostname + ":" + window.location.port + window.location.pathname;
+    var url = "ws://" + path + 'socket.ws';
+    var ws;
+    if (window.WebSocket) {
+        ws = new WebSocket(url);
+        ws.onerror = function (event) {
+            onError(event);
+        };
 
-    ws.onerror = function (event) {
-        onError(event);
-    };
+        ws.onopen = function (event) {
+            onOpen(event);
+        };
 
-    ws.onopen = function (event) {
-        onOpen(event);
-    };
-
-    ws.onmessage = function (event) {
-        onMessage(event);
-    };
+        ws.onmessage = function (event) {
+            onMessage(event);
+        };
+    } else {
+        alert("您的浏览器不支持WebSocket,请用其他浏览器试试,比如Chrome");
+    }
 
     function onMessage(event) {
         document.getElementById('messages').innerHTML += '<br />' + event.data;
